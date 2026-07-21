@@ -1,0 +1,1844 @@
+{
+  "meta": {
+    "title": "Praxis AI \u2014 Inference Flow",
+    "author": "praxis-proxy/ai",
+    "branding": {
+      "title": "Praxis"
+    }
+  },
+  "canvas": {
+    "width": 1250,
+    "height": 1100
+  },
+  "nodes": {
+    "user": {
+      "x": -20,
+      "y": 155,
+      "w": 100,
+      "h": 50,
+      "label": "Client / Agent",
+      "type": "icon",
+      "color": "#58a6ff"
+    },
+    "cluster": {
+      "x": 120,
+      "y": 55,
+      "w": 1080,
+      "h": 903,
+      "type": "boundary",
+      "label": "cluster",
+      "labelAlign": "right",
+      "labelColor": "#3fb95099"
+    },
+    "praxis": {
+      "x": 260,
+      "y": 95,
+      "w": 860,
+      "h": 638,
+      "type": "container",
+      "label": "Praxis AI Proxy",
+      "color": "#58a6ff",
+      "sections": [
+        {
+          "label": "Request filters \u2192",
+          "y": 155,
+          "height": 370,
+          "color": "#58a6ff"
+        },
+        {
+          "label": "\u2190 Response filters",
+          "y": 553,
+          "height": 168,
+          "color": "#3fb950"
+        }
+      ]
+    },
+    "ingress": {
+      "x": 290,
+      "y": 115,
+      "w": 800,
+      "h": 42,
+      "label": "HTTP Listener",
+      "sublabel": "Pingora / filter pipeline",
+      "color": "#58a6ff",
+      "fontSize": 15,
+      "inner": true
+    },
+    "f_auth": {
+      "x": 290,
+      "y": 175,
+      "w": 800,
+      "h": 34,
+      "label": "auth",
+      "sublabel": "MaaS API key",
+      "type": "plugin",
+      "color": "#f0883e",
+      "fontSize": 13,
+      "inner": true,
+      "soon": true
+    },
+    "f_rlimit": {
+      "x": 290,
+      "y": 213,
+      "w": 800,
+      "h": 34,
+      "label": "rate_limit",
+      "sublabel": "token quota",
+      "type": "plugin",
+      "color": "#f0883e",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_rguard": {
+      "x": 290,
+      "y": 251,
+      "w": 800,
+      "h": 34,
+      "label": "ai_guardrails",
+      "sublabel": "request / NeMo",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_m2h": {
+      "x": 290,
+      "y": 289,
+      "w": 800,
+      "h": 34,
+      "label": "model_to_header",
+      "sublabel": "X-Model",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_resolve": {
+      "x": 290,
+      "y": 327,
+      "w": 800,
+      "h": 34,
+      "label": "provider_resolve",
+      "sublabel": "classify \u2192 cluster",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_bmth": {
+      "x": 290,
+      "y": 365,
+      "w": 800,
+      "h": 34,
+      "label": "base_model_to_header",
+      "sublabel": "LoRA \u2192 base",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true,
+      "soon": true
+    },
+    "f_at_req": {
+      "x": 290,
+      "y": 403,
+      "w": 800,
+      "h": 34,
+      "label": "api_translation",
+      "sublabel": "request",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_cred": {
+      "x": 290,
+      "y": 441,
+      "w": 800,
+      "h": 34,
+      "label": "credential_injection",
+      "sublabel": "provider key",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_epp": {
+      "x": 290,
+      "y": 479,
+      "w": 800,
+      "h": 34,
+      "label": "endpoint_picker",
+      "sublabel": "GIE semantics",
+      "type": "plugin",
+      "color": "#79c0ff",
+      "fontSize": 13,
+      "inner": true,
+      "soon": true
+    },
+    "f_at_resp": {
+      "x": 290,
+      "y": 561,
+      "w": 800,
+      "h": 34,
+      "label": "api_translation",
+      "sublabel": "response",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_resp_guard": {
+      "x": 290,
+      "y": 599,
+      "w": 800,
+      "h": 34,
+      "label": "ai_guardrails",
+      "sublabel": "response / NeMo",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_token": {
+      "x": 290,
+      "y": 637,
+      "w": 800,
+      "h": 34,
+      "label": "token_count",
+      "sublabel": "usage extract",
+      "type": "plugin",
+      "color": "#d2a8ff",
+      "fontSize": 13,
+      "inner": true
+    },
+    "f_rl_rep": {
+      "x": 290,
+      "y": 675,
+      "w": 800,
+      "h": 34,
+      "label": "rate_limit",
+      "sublabel": "report usage",
+      "type": "plugin",
+      "color": "#f0883e",
+      "fontSize": 13,
+      "inner": true
+    },
+    "openai": {
+      "x": -40,
+      "y": 280,
+      "w": 140,
+      "h": 50,
+      "label": "OpenAI",
+      "sublabel": "gpt-4o-mini",
+      "color": "#3fb950",
+      "fontSize": 14
+    },
+    "anthropic": {
+      "x": -40,
+      "y": 345,
+      "w": 140,
+      "h": 50,
+      "label": "Anthropic",
+      "sublabel": "claude-haiku-4-5",
+      "color": "#3fb950",
+      "fontSize": 14
+    },
+    "azure": {
+      "x": -40,
+      "y": 410,
+      "w": 140,
+      "h": 50,
+      "label": "Azure OpenAI",
+      "sublabel": "gpt-4.1-mini",
+      "color": "#3fb950",
+      "fontSize": 14
+    },
+    "bedrock": {
+      "x": -40,
+      "y": 475,
+      "w": 140,
+      "h": 50,
+      "label": "Bedrock",
+      "sublabel": "claude-3-haiku",
+      "color": "#3fb950",
+      "fontSize": 14
+    },
+    "vertex": {
+      "x": -40,
+      "y": 540,
+      "w": 140,
+      "h": 50,
+      "label": "Vertex AI",
+      "sublabel": "gemini-2.5-flash",
+      "color": "#3fb950",
+      "fontSize": 14
+    },
+    "maas": {
+      "x": 130,
+      "y": 175,
+      "w": 110,
+      "h": 80,
+      "label": "MaaS API",
+      "sublabel": "key validation",
+      "color": "#79c0ff",
+      "fontSize": 13
+    },
+    "pool": {
+      "x": 200,
+      "y": 763,
+      "w": 1000,
+      "h": 175,
+      "type": "boundary",
+      "label": "InferencePool (llm-d)",
+      "labelAlign": "left",
+      "subBoundaries": [
+        {
+          "x": 235,
+          "y": 826,
+          "w": 230,
+          "h": 82,
+          "color": "#d2a8ff44"
+        },
+        {
+          "x": 845,
+          "y": 826,
+          "w": 230,
+          "h": 82,
+          "color": "#d2a8ff44"
+        }
+      ]
+    },
+    "sidecar": {
+      "x": 380,
+      "y": 783,
+      "w": 130,
+      "h": 38,
+      "label": "Sidecar",
+      "color": "#8b949e",
+      "fontSize": 14
+    },
+    "decode": {
+      "x": 250,
+      "y": 838,
+      "w": 200,
+      "h": 60,
+      "label": "vLLM",
+      "sublabel": "Decode Pod A",
+      "color": "#d2a8ff",
+      "fontSize": 16,
+      "stackCount": 2,
+      "stackOffset": {
+        "dx": -8,
+        "dy": -5
+      }
+    },
+    "nixl": {
+      "x": 530,
+      "y": 843,
+      "w": 240,
+      "h": 50,
+      "label": "NIXL",
+      "sublabel": "KV Transfer (KVXfer)",
+      "color": "#8b949e",
+      "fontSize": 14
+    },
+    "prefill": {
+      "x": 860,
+      "y": 838,
+      "w": 200,
+      "h": 60,
+      "label": "vLLM",
+      "sublabel": "Prefill Pod B",
+      "color": "#d2a8ff",
+      "fontSize": 16,
+      "stackCount": 2,
+      "stackOffset": {
+        "dx": -8,
+        "dy": -5
+      }
+    }
+  },
+  "tooltips": {
+    "ingress": {
+      "title": "HTTP Listener",
+      "description": "Praxis AI proxy entry point (Pingora). All inference traffic enters a single in-process filter pipeline \u2014 no Envoy Wasm shim and no ext_proc round-trips.",
+      "details": [
+        [
+          "Data plane",
+          "praxis-ai-proxy"
+        ],
+        [
+          "Protocol",
+          "HTTP/1.1, HTTP/2"
+        ],
+        [
+          "Routing",
+          "External providers or InferencePool via filters"
+        ]
+      ],
+      "links": [
+        [
+          "AI Inference docs",
+          "../ai-inference.md"
+        ],
+        [
+          "Features",
+          "../../features.md"
+        ]
+      ]
+    },
+    "f_auth": {
+      "title": "auth (planned)",
+      "description": "Validates the client API key via MaaS (or equivalent). Injects identity/subscription headers for downstream filters. Replaces Kuadrant Authorino as an in-proxy filter.",
+      "details": [
+        [
+          "Status",
+          "Coming soon"
+        ],
+        [
+          "Phase",
+          "Request"
+        ],
+        [
+          "Callback",
+          "MaaS /internal API key validate"
+        ],
+        [
+          "Error",
+          "401 Unauthorized"
+        ]
+      ]
+    },
+    "f_rlimit": {
+      "title": "rate_limit",
+      "description": "Built-in Praxis rate_limit filter. Pre-checks token quota before inference; reports consumed tokens on the response path.",
+      "details": [
+        [
+          "Phase",
+          "Request + Response"
+        ],
+        [
+          "Replaces",
+          "Kuadrant Limitador Wasm path"
+        ],
+        [
+          "Error",
+          "429 Too Many Requests"
+        ]
+      ],
+      "links": [
+        [
+          "Praxis rate limiting",
+          "https://github.com/praxis-proxy/praxis"
+        ]
+      ]
+    },
+    "f_rguard": {
+      "title": "ai_guardrails (request)",
+      "description": "Calls an external content-safety provider (NeMo) to evaluate the request body. Outcomes: pass, block (403), or redact.",
+      "details": [
+        [
+          "Filter",
+          "ai_guardrails"
+        ],
+        [
+          "Phase",
+          "Request"
+        ],
+        [
+          "Provider",
+          "NeMo Guardrails"
+        ]
+      ],
+      "links": [
+        [
+          "Proposal #138",
+          "../../proposals/00138_external_guardrails.md"
+        ]
+      ]
+    },
+    "f_m2h": {
+      "title": "model_to_header",
+      "description": "Extracts the model field from the JSON body and promotes it to an X-Model header for header-based routing.",
+      "details": [
+        [
+          "Filter",
+          "model_to_header"
+        ],
+        [
+          "Header",
+          "X-Model"
+        ],
+        [
+          "Phase",
+          "Request"
+        ]
+      ],
+      "links": [
+        [
+          "AI Inference",
+          "../ai-inference.md"
+        ]
+      ]
+    },
+    "f_resolve": {
+      "title": "provider_resolve",
+      "description": "Classifier + router facts: map model name to provider cluster or InferencePool. Promotes x-praxis-ai-* headers / filter metadata for branch routing.",
+      "details": [
+        [
+          "Mechanism",
+          "classify \u2192 headers \u2192 router"
+        ],
+        [
+          "Phase",
+          "Request"
+        ],
+        [
+          "Outputs",
+          "cluster selection facts"
+        ]
+      ]
+    },
+    "f_bmth": {
+      "title": "base_model_to_header (planned)",
+      "description": "Resolves LoRA adapter names to their base model so endpoint_picker can select pods running the correct base model.",
+      "details": [
+        [
+          "Status",
+          "Coming soon"
+        ],
+        [
+          "Phase",
+          "Request"
+        ],
+        [
+          "Use case",
+          "LoRA \u2192 InferencePool affinity"
+        ]
+      ]
+    },
+    "f_at_req": {
+      "title": "api_translation (request)",
+      "description": "Translates client API format to provider-native (e.g. OpenAI Chat Completions \u2192 Anthropic Messages) via anthropic_* / format filters.",
+      "details": [
+        [
+          "Filters",
+          "anthropic_to_openai, format filters"
+        ],
+        [
+          "Phase",
+          "Request"
+        ],
+        [
+          "Example",
+          "path /v1/chat/completions \u2192 /v1/messages"
+        ]
+      ],
+      "links": [
+        [
+          "Anthropic Messages",
+          "../../anthropic-messages.md"
+        ]
+      ]
+    },
+    "f_cred": {
+      "title": "credential_injection",
+      "description": "Injects per-cluster provider API credentials and strips client credentials before upstream.",
+      "details": [
+        [
+          "Filter",
+          "credential_injection"
+        ],
+        [
+          "Phase",
+          "Request"
+        ],
+        [
+          "Anthropic",
+          "x-api-key"
+        ],
+        [
+          "OpenAI",
+          "Authorization: Bearer"
+        ]
+      ]
+    },
+    "f_epp": {
+      "title": "endpoint_picker (planned)",
+      "description": "Implements Gateway API Inference Extension selection semantics in-process: score pods (KV cache, queue, affinity) and override the destination endpoint. No ext_proc / external EPP.",
+      "details": [
+        [
+          "Status",
+          "Coming soon"
+        ],
+        [
+          "Spec",
+          "GIE semantics (not ext_proc wire)"
+        ],
+        [
+          "Phase",
+          "Request"
+        ],
+        [
+          "Output",
+          "Selected pod / endpoint"
+        ]
+      ],
+      "links": [
+        [
+          "GIE docs",
+          "https://gateway-api-inference-extension.sigs.k8s.io/"
+        ]
+      ]
+    },
+    "f_at_resp": {
+      "title": "api_translation (response)",
+      "description": "Translates provider-native responses back to the client API format (streaming-aware where applicable).",
+      "details": [
+        [
+          "Phase",
+          "Response"
+        ]
+      ]
+    },
+    "f_resp_guard": {
+      "title": "ai_guardrails (response)",
+      "description": "Evaluates upstream response content with the external guardrail provider before returning to the client.",
+      "details": [
+        [
+          "Phase",
+          "Response"
+        ],
+        [
+          "Filter",
+          "ai_guardrails"
+        ]
+      ]
+    },
+    "f_token": {
+      "title": "token_count",
+      "description": "Extracts token usage from inference responses (streaming and non-streaming) into filter metadata.",
+      "details": [
+        [
+          "Filter",
+          "token_count"
+        ],
+        [
+          "Metadata",
+          "token.input / token.output / token.total"
+        ]
+      ]
+    },
+    "f_rl_rep": {
+      "title": "rate_limit (report)",
+      "description": "Reports consumed tokens from filter metadata back into the rate-limit budget after a successful response.",
+      "details": [
+        [
+          "Phase",
+          "Response"
+        ],
+        [
+          "Filter",
+          "rate_limit"
+        ]
+      ]
+    },
+    "maas": {
+      "title": "MaaS API",
+      "description": "External control-plane service for API key and subscription validation. Called by the auth filter \u2014 not part of the Praxis data plane.",
+      "details": [
+        [
+          "Role",
+          "Key validation callback"
+        ],
+        [
+          "Called by",
+          "auth filter"
+        ]
+      ]
+    },
+    "anthropic": {
+      "title": "Anthropic",
+      "description": "External Claude API. Receives requests after api_translation and credential_injection.",
+      "details": [
+        [
+          "Model",
+          "claude-haiku-4-5"
+        ],
+        [
+          "API",
+          "/v1/messages"
+        ],
+        [
+          "Auth",
+          "x-api-key"
+        ]
+      ]
+    },
+    "openai": {
+      "title": "OpenAI",
+      "description": "External OpenAI API. Native Chat Completions / Responses path when no translation is needed.",
+      "details": [
+        [
+          "Model",
+          "gpt-4o-mini"
+        ]
+      ]
+    },
+    "azure": {
+      "title": "Azure OpenAI",
+      "description": "Azure OpenAI endpoint cluster."
+    },
+    "bedrock": {
+      "title": "AWS Bedrock",
+      "description": "Bedrock OpenAI-compatible endpoint cluster."
+    },
+    "vertex": {
+      "title": "Vertex AI",
+      "description": "Google Vertex AI endpoint cluster."
+    },
+    "sidecar": {
+      "title": "Sidecar",
+      "description": "llm-d sidecar coordinating prefills/decode for disaggregated serving. Outside Praxis \u2014 Praxis only selects the endpoint."
+    },
+    "prefill": {
+      "title": "Prefill Pod B (vLLM)",
+      "description": "Processes the prompt and produces KV cache for decode."
+    },
+    "decode": {
+      "title": "Decode Pod A (vLLM)",
+      "description": "Auto-regressive generation using KV cache from prefill via NIXL."
+    },
+    "nixl": {
+      "title": "NIXL",
+      "description": "High-speed KV transfer between prefill and decode pods."
+    }
+  },
+  "flows": {
+    "ext": {
+      "label": "External Model (Anthropic)",
+      "steps": [
+        {
+          "text": "1. Client sends POST /v1/chat/completions",
+          "mode": "arrow",
+          "from": "user",
+          "to": "ingress",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true,
+          "yOff": -10,
+          "glow": "praxis"
+        },
+        {
+          "text": "2. auth validates API key",
+          "mode": "lightup",
+          "target": "f_auth",
+          "badge": 2
+        },
+        {
+          "text": "3. auth \u2192 MaaS API (key validation)",
+          "mode": "arrow",
+          "from": "f_auth",
+          "to": "maas",
+          "color": "#58a6ff",
+          "num": 3,
+          "fromLeft": true,
+          "toRight": true
+        },
+        {
+          "text": "4. MaaS API responds: key valid",
+          "mode": "arrow",
+          "from": "maas",
+          "to": "f_auth",
+          "color": "#58a6ff",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "5. rate_limit checks token quota",
+          "mode": "lightup",
+          "target": "f_rlimit",
+          "badge": 5
+        },
+        {
+          "text": "6. ai_guardrails: request safety check",
+          "mode": "lightup",
+          "target": "f_rguard",
+          "badge": 6
+        },
+        {
+          "text": "7. model_to_header: extract model",
+          "mode": "lightup",
+          "target": "f_m2h",
+          "badge": 7
+        },
+        {
+          "text": "8. provider_resolve: select Anthropic cluster",
+          "mode": "lightup",
+          "target": "f_resolve",
+          "badge": 8
+        },
+        {
+          "text": "9. api_translation: OpenAI \u2192 Anthropic",
+          "mode": "lightup",
+          "target": "f_at_req",
+          "badge": 9
+        },
+        {
+          "text": "10. credential_injection: inject provider key",
+          "mode": "lightup",
+          "target": "f_cred",
+          "badge": 10
+        },
+        {
+          "text": "11. Praxis routes to Anthropic",
+          "mode": "arrow",
+          "from": "ingress",
+          "to": "anthropic",
+          "color": "#58a6ff",
+          "num": 11,
+          "fromLeft": true,
+          "toRight": true,
+          "yOff": 20,
+          "glow": "praxis"
+        },
+        {
+          "text": "12. Anthropic responds",
+          "mode": "arrow",
+          "from": "anthropic",
+          "to": "ingress",
+          "color": "#3fb950",
+          "num": 12,
+          "fromRight": true,
+          "toLeft": true,
+          "yOff": 30
+        },
+        {
+          "text": "13. api_translation: Anthropic \u2192 OpenAI response",
+          "mode": "lightup",
+          "target": "f_at_resp",
+          "badge": 13
+        },
+        {
+          "text": "14. ai_guardrails: response safety check",
+          "mode": "lightup",
+          "target": "f_resp_guard",
+          "badge": 14
+        },
+        {
+          "text": "15. token_count: extract usage",
+          "mode": "lightup",
+          "target": "f_token",
+          "badge": 15
+        },
+        {
+          "text": "16. rate_limit: report token usage",
+          "mode": "lightup",
+          "target": "f_rl_rep",
+          "badge": 16
+        },
+        {
+          "text": "17. Response to client (OpenAI format)",
+          "mode": "arrow",
+          "from": "ingress",
+          "to": "user",
+          "color": "#3fb950",
+          "num": 17,
+          "fromLeft": true,
+          "toRight": true,
+          "yOff": 10
+        }
+      ]
+    },
+    "inc": {
+      "label": "Internal Model (llm-d)",
+      "steps": [
+        {
+          "text": "1. Client sends POST /v1/chat/completions",
+          "mode": "arrow",
+          "from": "user",
+          "to": "ingress",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true,
+          "yOff": -10,
+          "glow": "praxis"
+        },
+        {
+          "text": "2. auth validates API key",
+          "mode": "lightup",
+          "target": "f_auth",
+          "badge": 2
+        },
+        {
+          "text": "3. auth \u2192 MaaS API (key validation)",
+          "mode": "arrow",
+          "from": "f_auth",
+          "to": "maas",
+          "color": "#58a6ff",
+          "num": 3,
+          "fromLeft": true,
+          "toRight": true
+        },
+        {
+          "text": "4. MaaS API responds: key valid",
+          "mode": "arrow",
+          "from": "maas",
+          "to": "f_auth",
+          "color": "#58a6ff",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "5. rate_limit checks token quota",
+          "mode": "lightup",
+          "target": "f_rlimit",
+          "badge": 5
+        },
+        {
+          "text": "6. ai_guardrails: request safety check",
+          "mode": "lightup",
+          "target": "f_rguard",
+          "badge": 6
+        },
+        {
+          "text": "7. model_to_header: extract model",
+          "mode": "lightup",
+          "target": "f_m2h",
+          "badge": 7
+        },
+        {
+          "text": "8. provider_resolve: resolve InferencePool",
+          "mode": "lightup",
+          "target": "f_resolve",
+          "badge": 8
+        },
+        {
+          "text": "9. base_model_to_header: resolve LoRA base",
+          "mode": "lightup",
+          "target": "f_bmth",
+          "badge": 9
+        },
+        {
+          "text": "10. endpoint_picker: select P/D workers (GIE)",
+          "mode": "lightup",
+          "target": "f_epp",
+          "badge": 10
+        },
+        {
+          "text": "11. Praxis \u2192 Sidecar (selected endpoint)",
+          "mode": "arrow",
+          "from": "ingress",
+          "to": "sidecar",
+          "color": "#58a6ff",
+          "num": 11,
+          "fromBottom": true,
+          "toTop": true,
+          "glow": "praxis"
+        },
+        {
+          "text": "12. Sidecar coordinates P/D",
+          "mode": "lightup",
+          "target": "sidecar",
+          "badge": 12
+        },
+        {
+          "text": "13. Sidecar \u2192 Prefill Pod B",
+          "mode": "arrow",
+          "from": "sidecar",
+          "to": "prefill",
+          "color": "#58a6ff",
+          "num": 13
+        },
+        {
+          "text": "14. Prefill processing",
+          "mode": "lightup",
+          "target": "prefill",
+          "badge": 14
+        },
+        {
+          "text": "15. Prefill \u2192 Sidecar (KV ready)",
+          "mode": "arrow",
+          "from": "prefill",
+          "to": "sidecar",
+          "color": "#58a6ff",
+          "num": 15
+        },
+        {
+          "text": "16. Sidecar \u2192 Decode Pod A",
+          "mode": "arrow",
+          "from": "sidecar",
+          "to": "decode",
+          "color": "#58a6ff",
+          "num": 16
+        },
+        {
+          "text": "17. Decode requests KVs via NIXL",
+          "mode": "arrow",
+          "from": "decode",
+          "to": "nixl",
+          "color": "#58a6ff",
+          "num": 17
+        },
+        {
+          "text": "18. NIXL returns KV cache",
+          "mode": "arrow",
+          "from": "nixl",
+          "to": "decode",
+          "color": "#58a6ff",
+          "num": 18
+        },
+        {
+          "text": "19. Decode \u2192 Praxis (response)",
+          "mode": "arrow",
+          "from": "decode",
+          "to": "ingress",
+          "color": "#3fb950",
+          "num": 19,
+          "fromTop": true,
+          "toBottom": true
+        },
+        {
+          "text": "20. ai_guardrails: response safety check",
+          "mode": "lightup",
+          "target": "f_resp_guard",
+          "badge": 20
+        },
+        {
+          "text": "21. token_count: extract usage",
+          "mode": "lightup",
+          "target": "f_token",
+          "badge": 21
+        },
+        {
+          "text": "22. rate_limit: report token usage",
+          "mode": "lightup",
+          "target": "f_rl_rep",
+          "badge": 22
+        },
+        {
+          "text": "23. Response to client (OpenAI format)",
+          "mode": "arrow",
+          "from": "ingress",
+          "to": "user",
+          "color": "#3fb950",
+          "num": 23,
+          "fromLeft": true,
+          "toRight": true,
+          "yOff": 10
+        }
+      ]
+    },
+    "auth": {
+      "label": "Auth Failure (401)",
+      "steps": [
+        {
+          "text": "1. Client sends POST /v1/chat/completions",
+          "mode": "arrow",
+          "from": "user",
+          "to": "ingress",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true,
+          "yOff": -10,
+          "glow": "praxis"
+        },
+        {
+          "text": "2. auth validates API key",
+          "mode": "lightup",
+          "target": "f_auth",
+          "badge": 2
+        },
+        {
+          "text": "3. auth \u2192 MaaS API (key validation)",
+          "mode": "arrow",
+          "from": "f_auth",
+          "to": "maas",
+          "color": "#58a6ff",
+          "num": 3,
+          "fromLeft": true,
+          "toRight": true
+        },
+        {
+          "text": "4. MaaS API responds: key INVALID",
+          "mode": "arrow",
+          "from": "maas",
+          "to": "f_auth",
+          "color": "#f85149",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "5. auth rejects request",
+          "mode": "lightup",
+          "target": "f_auth",
+          "badge": "\u2717",
+          "errColor": "#f85149"
+        },
+        {
+          "text": "6. Praxis \u2192 Client: 401 Unauthorized",
+          "mode": "arrow",
+          "from": "ingress",
+          "to": "user",
+          "color": "#f85149",
+          "num": 6,
+          "fromLeft": true,
+          "toRight": true,
+          "yOff": 10
+        }
+      ]
+    },
+    "rl": {
+      "label": "Rate Limit (429)",
+      "steps": [
+        {
+          "text": "1. Client sends POST /v1/chat/completions",
+          "mode": "arrow",
+          "from": "user",
+          "to": "ingress",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true,
+          "yOff": -10,
+          "glow": "praxis"
+        },
+        {
+          "text": "2. auth validates API key",
+          "mode": "lightup",
+          "target": "f_auth",
+          "badge": 2
+        },
+        {
+          "text": "3. auth \u2192 MaaS API (key validation)",
+          "mode": "arrow",
+          "from": "f_auth",
+          "to": "maas",
+          "color": "#58a6ff",
+          "num": 3,
+          "fromLeft": true,
+          "toRight": true
+        },
+        {
+          "text": "4. MaaS API responds: key valid",
+          "mode": "arrow",
+          "from": "maas",
+          "to": "f_auth",
+          "color": "#58a6ff",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "5. rate_limit checks token quota",
+          "mode": "lightup",
+          "target": "f_rlimit",
+          "badge": 5
+        },
+        {
+          "text": "6. rate_limit: quota EXCEEDED",
+          "mode": "lightup",
+          "target": "f_rlimit",
+          "badge": "\u2717",
+          "errColor": "#f85149"
+        },
+        {
+          "text": "7. Praxis \u2192 Client: 429 Too Many Requests",
+          "mode": "arrow",
+          "from": "ingress",
+          "to": "user",
+          "color": "#f85149",
+          "num": 7,
+          "fromLeft": true,
+          "toRight": true,
+          "yOff": 10
+        }
+      ]
+    }
+  },
+  "flowOrder": [
+    "ext",
+    "inc",
+    "auth",
+    "rl"
+  ],
+  "defaultFlow": "ext",
+  "legend": [
+    {
+      "label": "Request",
+      "color": "#58a6ff"
+    },
+    {
+      "label": "Response",
+      "color": "#3fb950"
+    },
+    {
+      "label": "Auth / Rate Limit",
+      "color": "#f0883e"
+    },
+    {
+      "label": "Filter pipeline",
+      "color": "#d2a8ff"
+    },
+    {
+      "label": "Inference backend",
+      "color": "#79c0ff"
+    }
+  ],
+  "inspector": {
+    "initialState": {
+      "phase": "request",
+      "label": "Initial Request",
+      "headers": [
+        {
+          "value": "POST /v1/chat/completions",
+          "style": "keep",
+          "id": "h-path"
+        },
+        {
+          "value": "Authorization: Bearer sk-oai-abc123...",
+          "style": "keep",
+          "id": "h-auth"
+        },
+        {
+          "value": "Content-Type: application/json",
+          "style": "keep",
+          "id": "h-ct"
+        }
+      ],
+      "body": [
+        {
+          "value": "\"model\": \"claude-haiku-4-5-20251001\"",
+          "style": "keep",
+          "id": "b-model"
+        },
+        {
+          "value": "\"messages\": [{\"role\":\"user\",\"content\":\"Hello\"}]",
+          "style": "keep",
+          "id": "b-msgs"
+        },
+        {
+          "value": "\"max_tokens\": 100",
+          "style": "keep",
+          "id": "b-max"
+        },
+        {
+          "value": "\"stream\": false",
+          "style": "keep",
+          "id": "b-stream"
+        }
+      ],
+      "cycleState": []
+    },
+    "mutations": {
+      "ext": [
+        {
+          "step": 1,
+          "label": "\u2460 Incoming Request"
+        },
+        {
+          "step": 2,
+          "label": "\u2461 auth validates API key",
+          "actions": [
+            {
+              "id": "h-auth",
+              "style": "highlight"
+            }
+          ]
+        },
+        {
+          "step": 3,
+          "label": "\u2462 auth \u2192 MaaS API",
+          "actions": [
+            {
+              "id": "h-auth",
+              "style": "highlight"
+            }
+          ]
+        },
+        {
+          "step": 4,
+          "label": "\u2463 MaaS: key valid",
+          "actions": [
+            {
+              "id": "h-auth",
+              "style": "highlight"
+            },
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "X-MaaS-Username: cluster-admin",
+              "id": "h-maas-user"
+            },
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "X-MaaS-Subscription: ext-models-sub",
+              "id": "h-maas-sub"
+            }
+          ]
+        },
+        {
+          "step": 5,
+          "label": "\u2464 rate_limit quota check"
+        },
+        {
+          "step": 6,
+          "label": "\u2465 ai_guardrails (request)"
+        },
+        {
+          "step": 7,
+          "label": "\u2466 model_to_header",
+          "actions": [
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "X-Model: claude-haiku-4-5-20251001",
+              "id": "h-xmodel"
+            }
+          ]
+        },
+        {
+          "step": 8,
+          "label": "\u2467 provider_resolve",
+          "cycleState": [
+            {
+              "value": "cluster = \"anthropic\"",
+              "style": "add",
+              "id": "c-cluster"
+            },
+            {
+              "value": "target_model = \"claude-haiku-4-5-20251001\"",
+              "style": "add",
+              "id": "c-model"
+            }
+          ]
+        },
+        {
+          "step": 9,
+          "label": "\u2468 api_translation (request)",
+          "actions": [
+            {
+              "id": "h-path",
+              "style": "del"
+            },
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "POST /v1/messages",
+              "id": "h-path2"
+            },
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "anthropic-version: 2023-06-01",
+              "id": "h-aver"
+            },
+            {
+              "id": "h-auth",
+              "style": "del"
+            }
+          ]
+        },
+        {
+          "step": 10,
+          "label": "\u2469 credential_injection",
+          "actions": [
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "x-api-key: sk-ant-api03-xxxxx...",
+              "id": "h-xapi"
+            }
+          ]
+        },
+        {
+          "step": 11,
+          "label": "\u246a Route to Anthropic",
+          "actions": [
+            {
+              "id": "h-path2",
+              "style": "highlight"
+            },
+            {
+              "id": "h-xapi",
+              "style": "highlight"
+            }
+          ]
+        },
+        {
+          "step": 12,
+          "label": "\u246b Anthropic responds",
+          "phase": "response",
+          "replaceHeaders": [
+            {
+              "value": "HTTP/1.1 200 OK",
+              "style": "keep",
+              "id": "r-status"
+            },
+            {
+              "value": "Content-Type: application/json",
+              "style": "keep",
+              "id": "r-ct"
+            }
+          ],
+          "replaceBody": [
+            {
+              "value": "\"type\": \"message\"",
+              "style": "keep",
+              "id": "r-type"
+            },
+            {
+              "value": "\"content\": [{\"type\":\"text\",\"text\":\"Hello!\"}]",
+              "style": "keep",
+              "id": "r-content"
+            },
+            {
+              "value": "\"stop_reason\": \"end_turn\"",
+              "style": "keep",
+              "id": "r-stop"
+            },
+            {
+              "value": "\"usage\": {\"input_tokens\":8,\"output_tokens\":2}",
+              "style": "keep",
+              "id": "r-usage"
+            }
+          ],
+          "clearCycleState": true
+        },
+        {
+          "step": 13,
+          "label": "\u246c api_translation (response)",
+          "actions": [
+            {
+              "id": "r-type",
+              "style": "del"
+            },
+            {
+              "action": "add",
+              "target": "body",
+              "value": "\"object\": \"chat.completion\"",
+              "id": "r-obj"
+            },
+            {
+              "id": "r-content",
+              "style": "del"
+            },
+            {
+              "action": "add",
+              "target": "body",
+              "value": "\"choices\": [{\"message\":{\"content\":\"Hello!\"}}]",
+              "id": "r-choices"
+            },
+            {
+              "id": "r-stop",
+              "style": "del"
+            },
+            {
+              "action": "add",
+              "target": "body",
+              "value": "\"finish_reason\": \"stop\"",
+              "id": "r-finish"
+            },
+            {
+              "id": "r-usage",
+              "style": "del"
+            },
+            {
+              "action": "add",
+              "target": "body",
+              "value": "\"usage\": {\"prompt_tokens\":8,\"completion_tokens\":2,\"total_tokens\":10}",
+              "id": "r-usage2"
+            }
+          ]
+        },
+        {
+          "step": 14,
+          "label": "\u246d ai_guardrails (response)"
+        },
+        {
+          "step": 15,
+          "label": "\u246e token_count",
+          "actions": [
+            {
+              "id": "r-usage2",
+              "style": "highlight"
+            }
+          ]
+        },
+        {
+          "step": 16,
+          "label": "\u246f rate_limit report usage"
+        },
+        {
+          "step": 17,
+          "label": "\u2470 Response to Client",
+          "actions": [
+            {
+              "id": "r-obj",
+              "style": "highlight"
+            },
+            {
+              "id": "r-choices",
+              "style": "highlight"
+            }
+          ]
+        }
+      ],
+      "inc": [
+        {
+          "step": 1,
+          "label": "\u2460 Incoming Request"
+        },
+        {
+          "step": 2,
+          "label": "\u2461 auth validates API key",
+          "actions": [
+            {
+              "id": "h-auth",
+              "style": "highlight"
+            }
+          ]
+        },
+        {
+          "step": 3,
+          "label": "\u2462 auth \u2192 MaaS API"
+        },
+        {
+          "step": 4,
+          "label": "\u2463 MaaS: key valid",
+          "actions": [
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "X-MaaS-Username: cluster-admin",
+              "id": "h-maas-user"
+            },
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "X-MaaS-Subscription: int-models-sub",
+              "id": "h-maas-sub"
+            }
+          ]
+        },
+        {
+          "step": 5,
+          "label": "\u2464 rate_limit quota check"
+        },
+        {
+          "step": 6,
+          "label": "\u2465 ai_guardrails (request)"
+        },
+        {
+          "step": 7,
+          "label": "\u2466 model_to_header",
+          "actions": [
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "X-Model: llama-3.1-8b",
+              "id": "h-xmodel"
+            }
+          ]
+        },
+        {
+          "step": 8,
+          "label": "\u2467 provider_resolve (InferencePool)",
+          "cycleState": [
+            {
+              "value": "type = \"inferencepool\"",
+              "style": "add",
+              "id": "c-type"
+            },
+            {
+              "value": "pool = \"vllm-llama3-pool\"",
+              "style": "add",
+              "id": "c-pool"
+            }
+          ]
+        },
+        {
+          "step": 9,
+          "label": "\u2468 base_model_to_header",
+          "actions": [
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "X-Base-Model: llama-3.1-8b",
+              "id": "h-xbase"
+            }
+          ]
+        },
+        {
+          "step": 10,
+          "label": "\u2469 endpoint_picker (GIE)",
+          "actions": [
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "x-praxis-destination-endpoint: 10.0.2.14:8000",
+              "id": "h-dest"
+            }
+          ]
+        },
+        {
+          "step": 11,
+          "label": "\u246a Praxis \u2192 Sidecar"
+        },
+        {
+          "step": 12,
+          "label": "\u246b Sidecar coordinates P/D"
+        },
+        {
+          "step": 13,
+          "label": "\u246c Sidecar \u2192 Prefill"
+        },
+        {
+          "step": 14,
+          "label": "\u246d Prefill processing"
+        },
+        {
+          "step": 15,
+          "label": "\u246e Prefill \u2192 Sidecar"
+        },
+        {
+          "step": 16,
+          "label": "\u246f Sidecar \u2192 Decode"
+        },
+        {
+          "step": 17,
+          "label": "\u2470 Decode \u2194 NIXL"
+        },
+        {
+          "step": 18,
+          "label": "\u2471 NIXL \u2192 Decode"
+        },
+        {
+          "step": 19,
+          "label": "\u2472 Decode \u2192 Praxis",
+          "phase": "response",
+          "replaceHeaders": [
+            {
+              "value": "HTTP/1.1 200 OK",
+              "style": "keep",
+              "id": "r-status"
+            },
+            {
+              "value": "Content-Type: application/json",
+              "style": "keep",
+              "id": "r-ct"
+            }
+          ],
+          "replaceBody": [
+            {
+              "value": "\"object\": \"chat.completion\"",
+              "style": "keep",
+              "id": "r-obj"
+            },
+            {
+              "value": "\"choices\": [{\"message\":{\"content\":\"Hello!\"}}]",
+              "style": "keep",
+              "id": "r-choices"
+            },
+            {
+              "value": "\"finish_reason\": \"stop\"",
+              "style": "keep",
+              "id": "r-finish"
+            },
+            {
+              "value": "\"usage\": {\"prompt_tokens\":8,\"completion_tokens\":2,\"total_tokens\":10}",
+              "style": "keep",
+              "id": "r-usage2"
+            }
+          ],
+          "clearCycleState": true
+        },
+        {
+          "step": 20,
+          "label": "\u3251 ai_guardrails (response)"
+        },
+        {
+          "step": 21,
+          "label": "\u3252 token_count",
+          "actions": [
+            {
+              "id": "r-usage2",
+              "style": "highlight"
+            }
+          ]
+        },
+        {
+          "step": 22,
+          "label": "\u3253 rate_limit report usage"
+        },
+        {
+          "step": 23,
+          "label": "\u3254 Response to Client",
+          "actions": [
+            {
+              "id": "r-choices",
+              "style": "highlight"
+            }
+          ]
+        }
+      ],
+      "auth": [
+        {
+          "step": 1,
+          "label": "\u2460 Incoming Request"
+        },
+        {
+          "step": 2,
+          "label": "\u2461 auth validates API key",
+          "actions": [
+            {
+              "id": "h-auth",
+              "style": "highlight"
+            }
+          ]
+        },
+        {
+          "step": 3,
+          "label": "\u2462 auth \u2192 MaaS API"
+        },
+        {
+          "step": 4,
+          "label": "\u2463 MaaS: key INVALID",
+          "replaceBody": [
+            {
+              "value": "\"valid\": false",
+              "style": "add",
+              "id": "b-valid"
+            },
+            {
+              "value": "\"error\": \"invalid_api_key\"",
+              "style": "add",
+              "id": "b-err"
+            }
+          ],
+          "actions": [
+            {
+              "id": "h-auth",
+              "style": "del"
+            }
+          ]
+        },
+        {
+          "step": 5,
+          "label": "\u2464 auth REJECTS request"
+        },
+        {
+          "step": 6,
+          "label": "\u2465 401 Unauthorized \u2192 Client",
+          "phase": "error",
+          "replaceHeaders": [
+            {
+              "value": "HTTP/1.1 401 Unauthorized",
+              "style": "err",
+              "id": "r-status"
+            },
+            {
+              "value": "Content-Type: application/json",
+              "style": "keep",
+              "id": "r-ct"
+            }
+          ],
+          "replaceBody": [
+            {
+              "value": "\"error\": \"invalid_api_key\"",
+              "style": "err",
+              "id": "r-err"
+            },
+            {
+              "value": "\"message\": \"API key is not valid\"",
+              "style": "err",
+              "id": "r-msg"
+            }
+          ],
+          "clearCycleState": true
+        }
+      ],
+      "rl": [
+        {
+          "step": 1,
+          "label": "\u2460 Incoming Request"
+        },
+        {
+          "step": 2,
+          "label": "\u2461 auth validates API key"
+        },
+        {
+          "step": 3,
+          "label": "\u2462 auth \u2192 MaaS API"
+        },
+        {
+          "step": 4,
+          "label": "\u2463 MaaS: key valid",
+          "actions": [
+            {
+              "action": "add",
+              "target": "headers",
+              "value": "X-MaaS-Username: cluster-admin",
+              "id": "h-maas-user"
+            }
+          ]
+        },
+        {
+          "step": 5,
+          "label": "\u2464 rate_limit quota check"
+        },
+        {
+          "step": 6,
+          "label": "\u2465 rate_limit: quota EXCEEDED"
+        },
+        {
+          "step": 7,
+          "label": "\u2466 429 Too Many Requests \u2192 Client",
+          "phase": "error",
+          "replaceHeaders": [
+            {
+              "value": "HTTP/1.1 429 Too Many Requests",
+              "style": "err",
+              "id": "r-status"
+            },
+            {
+              "value": "Content-Type: application/json",
+              "style": "keep",
+              "id": "r-ct"
+            },
+            {
+              "value": "Retry-After: 60",
+              "style": "err",
+              "id": "r-retry"
+            }
+          ],
+          "replaceBody": [
+            {
+              "value": "\"error\": \"rate_limited\"",
+              "style": "err",
+              "id": "r-err"
+            },
+            {
+              "value": "\"message\": \"Token quota exceeded\"",
+              "style": "err",
+              "id": "r-msg"
+            },
+            {
+              "value": "\"retry_after\": 60",
+              "style": "err",
+              "id": "r-ra"
+            }
+          ],
+          "clearCycleState": true
+        }
+      ]
+    }
+  }
+}

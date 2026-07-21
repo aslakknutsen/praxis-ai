@@ -4,6 +4,10 @@ Body-aware classification, routing, and enrichment
 for AI inference traffic, built on the filter
 pipeline and StreamBuffer body access pattern.
 
+For an animated end-to-end view of the Praxis filter
+pipeline (external providers and llm-d InferencePool),
+see the [Inference Flow Visualizer](praxis-ai-flow/).
+
 ## Overview
 
 AI inference filters classify request bodies to

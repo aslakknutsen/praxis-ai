@@ -7,6 +7,7 @@ API integrations built on
 ## Architecture
 
 - [AI Inference](architecture/ai-inference.md)
+- [Inference Flow Visualizer](architecture/praxis-ai-flow/)
 - [Agentic Protocols](architecture/agentic-protocols.md)
 - [Response Store](architecture/response-store.md)
 

@@ -40,6 +40,8 @@ coverage.json
 docs/**/
 !docs/
 !docs/architecture/
+!docs/architecture/praxis-ai-flow/
+!docs/architecture/praxis-ai-flow/**
 !docs/developing/
 !docs/filters/
 !docs/filters/http/
