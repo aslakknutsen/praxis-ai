@@ -1,8 +1,9 @@
 # Praxis AI — Inference Flow Visualizer
 
-Interactive FlowStory diagram of the Praxis-native inference
-path: one in-process filter pipeline instead of Envoy +
-Kuadrant Wasm + IPP/EPP ext_proc.
+Interactive FlowStory diagram of a **single HTTP listener**
+that dispatches specialist stacks with Praxis
+`branch_chains` (not a linear mega-pipeline, and not
+path-selected named `filter_chains`).
 
 Open [index.html](index.html) via a local static server
 (ES modules require HTTP):
@@ -14,25 +15,46 @@ python3 -m http.server 9000
 
 Then visit <http://localhost:9000/>.
 
+## Model
+
+```text
+security trunk → path_classify (filter_results.api)
+                      │
+        ┌─────────────┼─────────────┐
+        ▼             ▼             ▼
+   responses      chat         inference
+   (full-flow)    (chat)       (pool prep)
+        │             │             │
+        └─────────────┴─────────────┘
+                      │
+              rejoin: next → shared egress
+              credential_injection → endpoint_picker
+              → router / LB → upstreams
+```
+
+`path_classify` is the path→result emitter required for
+real `branch_chains` (`on_result`). Branches cannot match
+URI natively. Marked **COMING SOON** in the diagram.
+
 ## Flows
 
 | Flow | What it shows |
 | --- | --- |
-| External Model (Anthropic) | Auth, rate limit, guardrails, model routing, API translation, credential injection, external provider |
-| Internal Model (llm-d) | Same front half, then `endpoint_picker` (GIE semantics) into InferencePool P/D |
-| Auth Failure (401) | MaaS key rejection |
-| Rate Limit (429) | Token quota exceeded |
+| Responses API (`/v1/responses`) | Security → classify → responses arm (full-flow filters) → egress → provider |
+| Chat Completions (`/v1/chat`) | Security → classify → chat arm → egress → Anthropic |
+| Inference pool (`/v1/inference`) | Security → classify → inference arm → `endpoint_picker` → llm-d P/D |
+| Auth Failure (401) | Stops in security trunk |
+| Rate Limit (429) | Stops in security trunk |
 
-## Layout
+Inactive branch arms stay on the canvas but are not
+lit for the active flow.
 
-- **Praxis AI Proxy** — request and response filter stacks (no ext_proc)
-- **MaaS API** — key validation callback from `auth`
-- **External providers** — Anthropic, OpenAI, Azure, Bedrock, Vertex
-- **InferencePool** — llm-d sidecar / prefill / decode / NIXL
+## Coming soon (diagram badges)
 
-Filters marked **COMING SOON** are not yet in-tree
-(`auth` as a dedicated MaaS filter, `base_model_to_header`,
-`endpoint_picker`).
+- `path_classify` (path → `filter_results.api`)
+- `auth` (MaaS-backed)
+- `base_model_to_header`
+- `endpoint_picker` (GIE semantics, no ext_proc)
 
 ## Vendor
 
